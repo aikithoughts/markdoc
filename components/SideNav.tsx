@@ -1,34 +1,44 @@
-import React from 'react';
-import {useRouter} from 'next/router';
-import Link from 'next/link';
+import React from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
+import { NAVIGATION } from "../data/navigation";
 
-const items = [
-  {
-    title: 'Get started',
-    links: [{href: '/docs', children: 'Overview'}],
-  },
-];
+const items = NAVIGATION;
 
 export function SideNav() {
   const router = useRouter();
 
+  const renderLinks = (links) => (
+    <ul className="flex column">
+      {links.map((link) => {
+        const active = router.pathname === link.href;
+        return (
+          <li key={link.href} className={active ? "active" : ""}>
+            <Link {...link} />
+          </li>
+        );
+      })}
+    </ul>
+  );
+
+  const renderItems = (items) =>
+    items.map((item) => (
+      <div key={item.title}>
+        <span>{item.title}</span>
+        {item.subItems && (
+          <div className="sub-items">
+            {item.subItems.map((subItem) => (
+              <div key={subItem.title}>{renderLinks(subItem.links)}</div>
+            ))}
+          </div>
+        )}
+        {renderLinks(item.links)}
+      </div>
+    ));
+
   return (
     <nav className="sidenav">
-      {items.map((item) => (
-        <div key={item.title}>
-          <span>{item.title}</span>
-          <ul className="flex column">
-            {item.links.map((link) => {
-              const active = router.pathname === link.href;
-              return (
-                <li key={link.href} className={active ? 'active' : ''}>
-                  <Link {...link} />
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-      ))}
+      {renderItems(items)}
       <style jsx>
         {`
           nav {
@@ -44,6 +54,9 @@ export function SideNav() {
             font-size: larger;
             font-weight: 500;
             padding: 0.5rem 0 0.5rem;
+          }
+          .sub-items {
+            margin-left: 1rem; /* Adjust the nesting indentation */
           }
           ul {
             padding: 0;

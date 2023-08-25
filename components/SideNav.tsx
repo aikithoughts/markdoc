@@ -1,27 +1,9 @@
 import React from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { NAVIGATION } from "../data/navigation";
 
-const items = [
-  {
-    title: "Get started",
-    links: [{ href: "/docs", children: "Overview" }],
-  },
-  {
-    title: "Dave's Intro",
-    links: [{ href: "/docs/dave-intro", children: "Introduction" }],
-    subItems: [
-      {
-        title: "About Jakob",
-        links: [{ href: "/docs/jakob-intro", children: "About Jakob" }],
-      },
-      {
-        title: "About Max",
-        links: [{ href: "/docs/max-intro", children: "About Max" }],
-      },
-    ],
-  },
-];
+const items = NAVIGATION;
 
 export function SideNav() {
   const router = useRouter();
